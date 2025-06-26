@@ -6,12 +6,12 @@ public:
         int sum=0,mn=INT_MAX;
         while(r<n){
             sum+=nums[r];
-            r++;
             while(sum>=target){
-                mn=min(mn,r-l);
+                mn=min(mn,r-l+1);
                 sum-=nums[l];
                 l++;
             }
+            r++;
         }
         if(mn==INT_MAX) return 0;
         return mn;
