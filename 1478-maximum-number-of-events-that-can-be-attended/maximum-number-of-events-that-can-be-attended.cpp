@@ -10,16 +10,16 @@ public:
             if(pq.empty()){
                 day=events[i][0];
             }
-            while(i<n and events[i][0]<=day){
+            while(i<n and events[i][0]==day){
                 pq.push(events[i][1]);
                 i++;
-            }
-            while(!pq.empty() and pq.top()<day){
-                pq.pop();
             }
             if(!pq.empty()){
                 pq.pop();
                 ct++;day++;
+            }
+            while(!pq.empty() and pq.top()<day){
+                pq.pop();
             }
         }
         return ct;
