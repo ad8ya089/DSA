@@ -11,6 +11,7 @@ public:
         int mx=odd;
         //sab even le
         mx=max(mx,even);
+        //even-odd ya odd-even case maan
         bool par=true; //even hoga toh true hoga
         if(nums[0]%2!=0) par=false;
         int ct=1;
