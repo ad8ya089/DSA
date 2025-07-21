@@ -1,18 +1,23 @@
 class Solution {
 public:
-    vector<int> findP(int n){
-        vector<int>v;
-        for(;n>0;n/=2) v.push_back(n);
-        return v;
-    }
+    //Easier Method
     vector<int> cycleLengthQueries(int n, vector<vector<int>>& queries) {
         vector<int>ans;
         for(auto q:queries){
-            vector<int>p1=findP(q[0]),p2=findP(q[1]);
-            while(!p1.empty() and !p2.empty() and p1.back()==p2.back()){
-                p1.pop_back();p2.pop_back();
+            int x=q[0],y=q[1];
+            int cx=0,cy=0;
+            //niche se upar jaa rhe till LCA
+            while(x!=y){
+                if(x>y){
+                    x/=2;
+                    cx++;
+                }
+                else{
+                    y=y/2;
+                    cy++;
+                }
             }
-            ans.push_back(1+p1.size()+p2.size());
+            ans.push_back(cx+cy+1);
         }
         return ans;
     }
