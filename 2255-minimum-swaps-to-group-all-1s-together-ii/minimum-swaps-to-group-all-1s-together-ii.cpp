@@ -12,14 +12,8 @@ public:
             if(nums[i]==0) zero++;
         }
         int ans=zero;
-        //further k windows
-        for(int i=k;i<n;i++){
-            if(nums[i-k]==0) zero--;
-            if(nums[i]==0) zero++;
-            ans=min(ans,zero);
-        }
-        //circular array k window
-        for(int i=n;i<n+k;i++){
+        //further k windows including circular array case
+        for(int i=k;i<n+k;i++){
             if(nums[i-k]==0) zero--;
             if(nums[i%n]==0) zero++;
             ans=min(ans,zero);
