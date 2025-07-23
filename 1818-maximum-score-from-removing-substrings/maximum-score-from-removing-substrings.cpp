@@ -11,11 +11,12 @@ public:
                 w-=2;
             }
         }
-        string str="";
-        for(int i=0;i<w;i++){
-            str+=s[i];
-        }
-        s=str;
+        // string str="";
+        // for(int i=0;i<w;i++){
+        //     str+=s[i];
+        // }
+        // s=str;
+        s=s.substr(0,w);
         return gain;
     }
     int maximumGain(string s, int x, int y) {
