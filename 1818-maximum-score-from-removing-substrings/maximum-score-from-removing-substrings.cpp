@@ -1,24 +1,21 @@
 class Solution {
 public:
+    //Two pointer approach(wihtout stack)
     int removePattern(string &s,char first,char second,int score){
-        stack<char>st;
+        int w=0; //write and read pointers
         int gain=0;
-        for(char c:s){
-            if(c==second){
-                if(!st.empty() and st.top()==first){
-                    gain+=score;
-                    st.pop();
-                }
-                else st.push(c);
+        for(int r=0;r<s.size();r++){
+            s[w++]=s[r];
+            if(w>=2 and s[w-2]==first and s[w-1]==second){
+                gain+=score;
+                w-=2;
             }
-            else st.push(c);
         }
-        s.clear();
-        while(!st.empty()){
-            s+=st.top();
-            st.pop();
+        string str="";
+        for(int i=0;i<w;i++){
+            str+=s[i];
         }
-        reverse(s.begin(),s.end());
+        s=str;
         return gain;
     }
     int maximumGain(string s, int x, int y) {
