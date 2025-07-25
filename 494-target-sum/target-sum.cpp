@@ -1,22 +1,30 @@
 class Solution {
 public:
-    //Memoization
-    //count ways hai toh 0/1 hi return krna h base case mei
-    int f(int ind,int target,vector<int>& nums,vector<vector<int>>&dp){
-        if(ind==0){
-            if(target-nums[0]==0 and target+nums[0]==0) return 2;
-            if(target-nums[0]==0 or target+nums[0]==0) return 1;
-            return 0;
+    //Tabulation
+    int countPartitions(vector<int>& arr, int d) {
+        // Code here
+        //s1-s2==d => sum-2s2=d => s2=(sum-d)/2 -->yehi count krna h
+        int n=arr.size();
+        int sum=accumulate(arr.begin(),arr.end(),0);
+        int s=(sum-d)/2;
+        if((sum-d)%2 or (sum-d)<0) return 0;
+        vector<vector<int>>dp(n,vector<int>(s+1,0));
+        if (arr[0] == 0) dp[0][0] = 2;  // pick or not pick
+        else dp[0][0] = 1;
+        if (arr[0] != 0 && arr[0] <= s)
+            dp[0][arr[0]] = 1;
+        for(int ind=1;ind<n;ind++){
+            for(int target=0;target<=s;target++){
+                int pick=0;
+                if(target>=arr[ind]) pick=dp[ind-1][target-arr[ind]];
+                int notPick=dp[ind-1][target];
+                dp[ind][target]=pick + notPick;
+            }
         }
-        if(target+1000<0 or target+1000>=2001) return 0;
-        if(dp[ind][target+1000]!=-1) return dp[ind][target+1000];
-        int add=f(ind-1,target-nums[ind],nums,dp);
-        int sub=f(ind-1,target+nums[ind],nums,dp);
-        return dp[ind][target+1000]=add+sub; 
+        return dp[n-1][s];
     }
+    //basically ismei bhi toh vhi krna hai, count number of subsets jisse do bhaag mei baat ke ek ko plus krke aur ek ko minus krke target amount mil jaaye
     int findTargetSumWays(vector<int>& nums, int amount) {
-        int n=nums.size();
-        vector<vector<int>> dp(n,vector<int>(2001,-1));
-        return f(n-1,amount,nums,dp);
+        return countPartitions(nums,amount);
     }
 };
