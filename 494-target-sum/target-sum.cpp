@@ -16,7 +16,7 @@ public:
     }
     int findTargetSumWays(vector<int>& nums, int amount) {
         int n=nums.size();
-        vector<vector<int>> dp(n,vector<int>(3001,-1));
+        vector<vector<int>> dp(n,vector<int>(2001,-1));
         return f(n-1,amount,nums,dp);
     }
 };
