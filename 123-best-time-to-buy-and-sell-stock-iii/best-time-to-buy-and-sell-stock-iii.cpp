@@ -1,28 +1,25 @@
 class Solution {
 public:
-    //Tabulation with space optimisation
     int maxProfit(vector<int>& prices) {
+        //Tabulation O(Nx4)
         int n=prices.size();
-        vector<vector<int>>ahead(2,vector<int>(3,0));
-        vector<vector<int>>curr(2,vector<int>(3,0));
-        //(N+1)x2x3 buy-->1, sell->0 , N+1 to incorporate ind==n case in tabulation
+        vector<vector<int>>dp(n+1,vector<int>(5,0));
+        for(int i=0;i<=4;i++) dp[n][i]=0;
+        for(int i=0;i<=n;i++) dp[i][4]=0;
         for(int ind=n-1;ind>=0;ind--){
-            for(int buy=0;buy<=1;buy++){
-                for(int cap=2;cap>=1;cap--){
-                    if(buy){
-                        int take=-prices[ind]+ahead[0][cap];
-                        int notTake=0+ahead[1][cap];
-                        curr[buy][cap]=max(take,notTake);
-                    }
-                    else{
-                        int sell=prices[ind]+ahead[1][cap-1];
-                        int notSell=0+ahead[0][cap];
-                        curr[buy][cap]=max(sell,notSell);
-                    }
+            for(int transac=3;transac>=0;transac--){
+                if(transac%2==0){//Buy
+                    int take=-prices[ind]+dp[ind+1][transac+1];
+                    int notTake=0+dp[ind+1][transac];
+                    dp[ind][transac]=max(take,notTake);
+                }
+                else{ //Sell
+                    int sell=prices[ind]+dp[ind+1][transac+1];
+                    int notSell=0+dp[ind+1][transac];
+                    dp[ind][transac]=max(sell,notSell);
                 }
             }
-            ahead=curr;
         }
-        return ahead[1][2];
+        return dp[0][0];
     }
 };
