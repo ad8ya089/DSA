@@ -1,25 +1,23 @@
 class Solution {
 public:
-    //Memoization O(NxK)
-    int n,k;
-    int f(int ind,int transac,vector<int>&prices,vector<vector<int>>&dp){
-        if(ind==n or transac==2*k) return 0;
-        if(dp[ind][transac]!=-1) return dp[ind][transac];
-        if(transac%2==0){ //Buy
-            int buy=-prices[ind]+f(ind+1,transac+1,prices,dp);
-            int notBuy=0+f(ind+1,transac,prices,dp);
-            return dp[ind][transac]=max(buy,notBuy);
+    //Tabulation O(NxK)
+    int maxProfit(int k, vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(2*k+1,0));
+        for(int ind=n-1;ind>=0;ind--){
+            for(int transac=2*k-1;transac>=0;transac--){
+                if(transac%2==0){ //Buy
+                    int buy=-prices[ind]+dp[ind+1][transac+1];
+                    int notBuy=0+dp[ind+1][transac];
+                    dp[ind][transac]=max(buy,notBuy);
+                }
+                else{ //Sell
+                    int sell=prices[ind]+dp[ind+1][transac+1];
+                    int notSell=0+dp[ind+1][transac];
+                    dp[ind][transac]=max(sell,notSell);
+                }
+            }
         }
-        else{ //Sell
-            int sell=prices[ind]+f(ind+1,transac+1,prices,dp);
-            int notSell=0+f(ind+1,transac,prices,dp);
-            return dp[ind][transac]=max(sell,notSell);
-        }
-    }
-    int maxProfit(int K, vector<int>& prices) {
-        k=K;
-        n=prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2*k+1,-1));
-        return f(0,0,prices,dp);
+        return dp[0][0];
     }
 };
