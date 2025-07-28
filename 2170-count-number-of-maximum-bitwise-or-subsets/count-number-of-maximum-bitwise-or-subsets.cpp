@@ -1,24 +1,18 @@
 class Solution {
 public:
-    //Memoization
-    int n;
-    int f(int ind,int currOR,int target,vector<int>& nums,vector<vector<int>>&dp){
-        if(ind==n){
-            if(currOR==target) return 1;
-            return 0;
-        }
-        if(dp[ind][currOR]!=-1) return dp[ind][currOR];
-        int take=f(ind+1,currOR|nums[ind],target,nums,dp);
-        int notTake=f(ind+1,currOR,target,nums,dp);
-        return dp[ind][currOR]=take+notTake;
-    }
+    //Bit manipulation
     int countMaxOrSubsets(vector<int>& nums) {
-        n=nums.size();
-        int mxOR=0;
-        for(int x:nums){
-            mxOR|=x;
+        int n=nums.size();
+        int mx=0;
+        vector<int>dp(1<<17,0);
+        //empty subset ka xor 0 hoga
+        dp[0]=1;
+        for(int num:nums){
+            for(int i=mx;i>=0;i--){
+                dp[i|num]+=dp[i];
+            }
+            mx|=num;
         }
-        vector<vector<int>>dp(n,vector<int>(mxOR+1,-1));
-        return f(0,0,mxOR,nums,dp);
+        return dp[mx];
     }
 };
