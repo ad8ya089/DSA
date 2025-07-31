@@ -27,10 +27,6 @@ public:
             r++;
         }
         if(mn==INT_MAX) return "";
-        string str="";
-        for(int i=sind;i<sind+mn;i++){
-            str+=s[i];
-        }
-        return str;
+        return s.substr(sind,mn);
     }
 };
