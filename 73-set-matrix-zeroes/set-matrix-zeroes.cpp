@@ -1,19 +1,51 @@
 class Solution {
 public:
+    //O(1) space
     void setZeroes(vector<vector<int>>& matrix) {
         int m=matrix.size(),n=matrix[0].size();
-        vector<int>rows(m),columns(n);
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(matrix[i][j]==0){
-                    rows[i]++;
-                    columns[j]++;
+        bool firstR=false,firstC=false;
+        for(int c=0;c<n;c++){
+            if(matrix[0][c]==0){
+                firstR=true;
+                break;
+            }
+        }
+        for(int r=0;r<m;r++){
+            if(matrix[r][0]==0){
+                firstC=true;
+                break;
+            }
+        }
+        for(int r=1;r<m;r++){
+            for(int c=1;c<n;c++){
+                if(matrix[r][c]==0){
+                    matrix[r][0]=0;
+                    matrix[0][c]=0;
                 }
             }
         }
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(rows[i]!=0 or columns[j]!=0) matrix[i][j]=0; 
+        for(int r=1;r<m;r++){
+            if(matrix[r][0]==0){
+                for(int c=1;c<n;c++){
+                    matrix[r][c]=0;
+                }
+            }
+        }
+        for(int c=1;c<n;c++){
+            if(matrix[0][c]==0){
+                for(int r=1;r<m;r++){
+                    matrix[r][c]=0;
+                }
+            }
+        }
+        if(firstR){
+            for(int c=0;c<n;c++){
+                matrix[0][c]=0;
+            }
+        }
+        if(firstC){
+            for(int r=0;r<m;r++){
+                matrix[r][0]=0;
             }
         }
     }
