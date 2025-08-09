@@ -1,27 +1,18 @@
 class Solution {
 public:
     int m,n;
-    int bfs(int row,int col,vector<vector<int>>& grid,vector<vector<bool>>&vis){
-        queue<pair<int,int>>q;
-        q.push({row,col});
+    int dfs(int row,int col,vector<vector<int>>& grid,vector<vector<bool>>&vis){
+        if(row<0 or row>=m or col<0 or col>=n or vis[row][col] or grid[row][col]==0) return 0;
         vis[row][col]=1;
-        int ct=0;
         vector<int>dr={-1,0,0,1};
         vector<int>dc={0,-1,1,0};
-        while(!q.empty()){
-            auto it=q.front();q.pop();
-            int r=it.first,c=it.second;
-            ct++;
-            for(int i=0;i<4;i++){
-                int nr=r+dr[i];
-                int nc=c+dc[i];
-                if(nr>=0 and nr<m and nc>=0 and nc<n and !vis[nr][nc] and grid[nr][nc]==1){
-                    q.push({nr,nc});
-                    vis[nr][nc]=1;
-                }
-            }
+        int tot=0;
+        for(int i=0;i<4;i++){
+            int nr=row+dr[i];
+            int nc=col+dc[i];
+            tot+=dfs(nr,nc,grid,vis);
         }
-        return ct;
+        return 1+tot;
     }
     int maxAreaOfIsland(vector<vector<int>>& grid) {
         m=grid.size();n=grid[0].size();
@@ -30,7 +21,7 @@ public:
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(!vis[i][j] and grid[i][j]==1){
-                    ans=max(ans,bfs(i,j,grid,vis));
+                    ans=max(ans,dfs(i,j,grid,vis));
                 }
             }
         }
