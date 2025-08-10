@@ -1,28 +1,27 @@
 class Solution {
 public:
-    //Backtracking with space
+    //Backtracking without much space(prev method hi better hai, template yaad rkh)
     int n;
-    void backtrack(int ind,vector<vector<int>>&list,vector<int>&tempList,vector<int>& nums,vector<bool>&used){
-        if(tempList.size()==n){
-            list.push_back(tempList);
+    void backtrack(int start,vector<vector<int>>&list,vector<int>&nums)
+    {
+        //start uss pointer pe hai jaha pe hum uske baad ke saare elements laa skte hai to create a permutation
+        if(start==n){
+            list.push_back(nums);
             return;
         }
-        for(int i=0;i<n;i++){
-            if(used[i] or (i>0 and nums[i]==nums[i-1] and !used[i-1])) continue; //duplicate h toh ma chuda , aur dusra 1 pehle 1 ke baad hi aaye vrna fir duplicate permutation bn jaega, mtlb agar 2 1's same ho toh sorted order mei ek hi baar aaye
-            used[i]=1;
-            tempList.push_back(nums[i]);
-            backtrack(i+1,list,tempList,nums,used);
-            used[i]=0;
-            tempList.pop_back();
+        unordered_set<int> seen;
+        for(int i=start;i<n;i++){
+            if(seen.count(nums[i])) continue;
+            seen.insert(nums[i]);
+            swap(nums[i],nums[start]); //swap 1->1, 1->2, 1->3, vaise hi 2->2,2->3 and 3->3
+            backtrack(start+1,list,nums); //pointer ko aage badhao na ki index ko
+            swap(nums[i],nums[start]);
         }
     }
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         n=nums.size();
-        sort(nums.begin(),nums.end());
         vector<vector<int>>list;
-        vector<int>tempList;
-        vector<bool>used(n,false);
-        backtrack(0,list,tempList,nums,used);
+        backtrack(0,list,nums);
         return list;
     }
 };
