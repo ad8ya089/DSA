@@ -8,7 +8,7 @@ public:
             return;
         }
         for(int i=0;i<n;i++){
-            if(used[i] or (i>0 and nums[i]==nums[i-1] and !used[i-1])) continue; //duplicate h toh ma chuda
+            if(used[i] or (i>0 and nums[i]==nums[i-1] and !used[i-1])) continue; //duplicate h toh ma chuda , aur dusra 1 pehle 1 ke baad hi aaye vrna fir duplicate permutation bn jaega, mtlb agar 2 1's same ho toh sorted order mei ek hi baar aaye
             used[i]=1;
             tempList.push_back(nums[i]);
             backtrack(i+1,list,tempList,nums,used);
