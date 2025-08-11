@@ -1,19 +1,21 @@
 class Solution {
 public:
-    unordered_set<string>st;
-    void buildSet(){
-        for(int p=0;p<=30;p++){ //10^9 tk 29 se hi kaam hojaata vaise
-            string s=to_string(1<<p);
-            sort(s.begin(),s.end());
-            st.insert(s);
-        }
-    }
+    //Approach 3- vector count (sort krne ka need ni)
+    
     bool reorderedPowerOf2(int n) {
-        if(st.empty()){
-            buildSet();
-        }
         string str=to_string(n);
-        sort(str.begin(),str.end());
-        return st.count(str);
+        vector<int>cnt(10,0);
+        for(int i=0;i<str.size();i++){
+            cnt[str[i]-'0']++;
+        }
+        for(int p=0;p<=29;p++){
+            string s=to_string(1<<p);
+            vector<int>cntTwo(10,0);
+            for(int i=0;i<s.size();i++){
+                cntTwo[s[i]-'0']++;
+            }
+            if(cntTwo==cnt) return true;
+        }
+        return false;
     }
 };
