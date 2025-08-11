@@ -1,22 +1,34 @@
 class Solution {
 public:
-    string s1,s2;
-    bool f(int len,int i,int j,vector<vector<vector<int>>>&dp){
-        string str1=s1.substr(i,len);
-        string str2=s2.substr(j,len);
-        if(str1==str2) return true;
-        if(dp[len][i][j]!=-1) return dp[len][i][j];
-        for(int k=1;k<len;k++){
-            bool noswap=f(k,i,j,dp) and f(len-k,i+k,j+k,dp);
-            bool swap=f(k,i,j+len-k,dp) and f(len-k,i+k,j,dp);
-            if(swap or noswap) return dp[len][i][j]=true;
-        }
-        return dp[len][i][j]=false;
+map<pair<string,string>,int>mp;
+
+
+bool rec(int n,string a,string b)
+{
+    if(a.compare(b)==0)
+    {
+        return true;
     }
-    bool isScramble(string S1, string S2) {
-        s1=S1,s2=S2;
-        int n=S1.size();
-        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(n+1,vector<int>(n+1,-1)));
-        return f(n,0,0,dp);
+    if(a.length()<=1) return false;
+
+    if(mp.find({a,b})!=mp.end())
+    {
+        return mp[{a,b}]; 
+    }
+
+    bool f=false;
+    for(int i=1;i<n;i++)
+    {
+        if((rec(i,a.substr(0,i),b.substr(0,i)) and rec(n-i,a.substr(i,n-i),b.substr(i,n-i))) or (rec(i,a.substr(0,i),b.substr(n-i,i)) and rec(n-i,a.substr(i,n-i),b.substr(0,n-i))))
+        {
+            return mp[{a,b}]=true;
+        }
+    }
+    return mp[{a,b}]=f;
+}
+    bool isScramble(string s1, string s2) {
+        int n=s1.size();
+        return rec(n,s1,s2);
+        
     }
 };
