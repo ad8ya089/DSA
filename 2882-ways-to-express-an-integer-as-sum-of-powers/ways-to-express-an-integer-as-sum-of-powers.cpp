@@ -1,6 +1,6 @@
 class Solution {
 public:
-    //Memo
+    //Memo(bina binary exponentiation ke ni hoga)
     vector<vector<int>>dp;
     int x;
     const int M=1e9+7;
