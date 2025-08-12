@@ -1,6 +1,7 @@
 class Solution {
 public:
-    //Tabulation-2D (bina binary exponentiation ke ni hoga)
+    //Bhai memo kaafi hai yeh sb bakchodi hai
+    //Tabulation-1D (bina binary exponentiation ke ni hoga)
     const int M=1e9+7;
     //Binary exponentiation template (CP template se uthaya)
     int power(long long base,long long exp){
@@ -13,27 +14,15 @@ public:
         return (int)res;
     }
     int numberOfWays(int n, int x) {
-        vector<int> pows; 
-        for (int i = 1;; i++) {
-            long long val = power(i, x);
-            if (val > n) break;
-            pows.push_back((int)val);
-        }
-        int m=pows.size();
-        vector<vector<int>>dp(m+1,vector<int>(n+1,0)); //{curr,target}
-        for(int curr=0;curr<=m;curr++){
-            dp[curr][0]=1;
-        }
-        for(int i=m-1;i>=0;i--){
-            for(int target=0;target<=n;target++){
-                //not take
-                dp[i][target]=dp[i+1][target];
-                //take current number
-                if(target>=pows[i]){
-                    dp[i][target]=(dp[i][target]+dp[i+1][target-pows[i]])%M;
-                }
+        vector<int>dp(n+1,0);
+        dp[0]=1;
+        for(int i=1;;i++){
+            long long val=power(i,x);
+            if(val>n) break;
+            for(int j=n;j>=val;j--){
+                dp[j]=(dp[j]+dp[j-val])%M;
             }
         }
-        return dp[0][n];
+        return dp[n];
     }
 };
