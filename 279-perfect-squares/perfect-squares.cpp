@@ -1,19 +1,19 @@
 class Solution {
 public:
-    //2D DP
-    int f(int num,int target,vector<vector<int>>&dp){
-        if(num==0) return 1e9;
-        if(target==0) return 0;
-        if(dp[num][target]!=-1) return dp[num][target];
-        //take
-        int take=1e9;
-        if(target>=num*num) take=1+f(num,target-num*num,dp);
-        //notTake
-        int notTake=f(num-1,target,dp);
-        return dp[num][target]=min(take,notTake);
+    //1D DP (Memo)
+    vector<int>dp;
+    int solve(int n){
+        if(n<=0) return 0;
+        if(dp[n]!=-1) return dp[n];
+        int ans=1e9;
+        for(int i=1;i*i<=n;i++){
+            int sq=i*i;
+            ans=min(ans,1+solve(n-sq)); //take (sab case hi dekh rha na toh notTake auto hai)
+        }
+        return dp[n]=ans;
     }
     int numSquares(int n) {
-        vector<vector<int>>dp(sqrt(n)+2,vector<int>(n+1,-1)); //num can be 0 as well so..
-        return f(sqrt(n),n,dp);
+        dp=vector<int>(n+1,-1);
+        return solve(n);
     }
 };
