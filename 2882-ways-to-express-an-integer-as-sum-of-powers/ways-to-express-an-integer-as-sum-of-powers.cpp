@@ -19,6 +19,7 @@ public:
         if(curr>n) return 0; //n<0 pe bhi
         if(dp[n][curr]!=-1) return dp[n][curr];
         int val=power(curr,x);
+        if(val>n) return 0; //time ki bachat lol
         int take=0;
         if(n>=val) take=f(n-val,curr+1);
         int notTake=f(n,curr+1);
