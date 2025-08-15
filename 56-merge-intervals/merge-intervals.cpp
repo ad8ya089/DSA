@@ -9,7 +9,7 @@ public:
             int currOne=intervals[i][0],currTwo=intervals[i][1];
             int prevOne=ans.back()[0],prevTwo=ans.back()[1];
             if(prevTwo>=currOne){
-                if(currTwo>prevTwo) ans.back()[1]=currTwo;
+                ans.back()[1]=max(currTwo,prevTwo);
             }
             else{
                 ans.push_back({currOne,currTwo});
