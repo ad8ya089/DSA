@@ -9,15 +9,15 @@ public:
         if(dp[r][c][cap]!=INT_MIN) return dp[r][c][cap];
         int rightDo=INT_MIN,rightDont=INT_MIN,downDo=INT_MIN,downDont=INT_MIN;
         if(coins[r][c]<0){
+            //Option to skip the negative cell
             if(cap>0 and c+1<n) rightDo=f(r,c+1,cap-1,dp,coins);
-            if(c+1<n) rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
             if(cap>0 and r+1<m) downDo=f(r+1,c,cap-1,dp,coins);
+            //Option to take it
+            if(c+1<n) rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
             if(r+1<m) downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
         }
         else{
-            if(c+1<n) rightDo=coins[r][c]+f(r,c+1,cap,dp,coins);
             if(c+1<n) rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
-            if(r+1<m) downDo=coins[r][c]+f(r+1,c,cap,dp,coins);
             if(r+1<m) downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
         }
         return dp[r][c][cap]=max(max(rightDo,rightDont),max(downDo,downDont));
