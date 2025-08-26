@@ -1,5 +1,6 @@
 class Solution {
 public:
+    //Memoization
     int m,n;
     int f(int r,int c,int cap,vector<vector<vector<int>>>&dp,vector<vector<int>>&coins){
         if(r==m-1 and c==n-1){
@@ -8,17 +9,14 @@ public:
         }
         if(dp[r][c][cap]!=INT_MIN) return dp[r][c][cap];
         int rightDo=INT_MIN,rightDont=INT_MIN,downDo=INT_MIN,downDont=INT_MIN;
-        if(coins[r][c]<0){
-            //Option to skip the negative cell
-            if(cap>0 and c+1<n) rightDo=f(r,c+1,cap-1,dp,coins);
-            if(cap>0 and r+1<m) downDo=f(r+1,c,cap-1,dp,coins);
-            //Option to take it
-            if(c+1<n) rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
-            if(r+1<m) downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
+        //Option to skip the negative cell
+        if(c+1<n){
+            if(cap>0) rightDo=f(r,c+1,cap-1,dp,coins);
+            rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
         }
-        else{
-            if(c+1<n) rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
-            if(r+1<m) downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
+        if(r+1<m){
+            if(cap>0) downDo=f(r+1,c,cap-1,dp,coins);
+            downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
         }
         return dp[r][c][cap]=max(max(rightDo,rightDont),max(downDo,downDont));
     }
