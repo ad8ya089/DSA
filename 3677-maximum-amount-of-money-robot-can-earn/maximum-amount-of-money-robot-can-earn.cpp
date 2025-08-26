@@ -2,27 +2,32 @@ class Solution {
 public:
     //Memoization
     int m,n;
-    int f(int r,int c,int cap,vector<vector<vector<int>>>&dp,vector<vector<int>>&coins){
-        if(r==m-1 and c==n-1){
-            if(cap>0 and coins[r][c]<0) return 0;
-            return coins[r][c];
-        }
-        if(dp[r][c][cap]!=INT_MIN) return dp[r][c][cap];
-        int rightDo=INT_MIN,rightDont=INT_MIN,downDo=INT_MIN,downDont=INT_MIN;
-        //Option to skip the negative cell
-        if(c+1<n){
-            if(cap>0) rightDo=f(r,c+1,cap-1,dp,coins);
-            rightDont=coins[r][c]+f(r,c+1,cap,dp,coins);
-        }
-        if(r+1<m){
-            if(cap>0) downDo=f(r+1,c,cap-1,dp,coins);
-            downDont=coins[r][c]+f(r+1,c,cap,dp,coins);
-        }
-        return dp[r][c][cap]=max(max(rightDo,rightDont),max(downDo,downDont));
-    }
     int maximumAmount(vector<vector<int>>& coins) {
         m=coins.size();n=coins[0].size();
         vector<vector<vector<int>>>dp(m,vector<vector<int>>(n,vector<int>(3,INT_MIN)));
-        return f(0,0,2,dp,coins);
+        for(int cap=0;cap<3;cap++){
+            for(int r=m-1;r>=0;r--){
+                for(int c=n-1;c>=0;c--){
+                    if(r==m-1 and c==n-1){
+                        if(cap>0 and coins[r][c]<0) dp[r][c][cap]=0;
+                        else dp[r][c][cap]=coins[r][c];
+                        continue;
+                    }
+                    int rightDo=INT_MIN,rightDont=INT_MIN,downDo=INT_MIN,downDont=INT_MIN;
+                    if(c+1<n){
+                        if(cap>0) rightDo=dp[r][c+1][cap-1];
+                        //Option to skip the negative cell
+                        rightDont=coins[r][c]+dp[r][c+1][cap];
+                    }
+                    if(r+1<m){
+                        if(cap>0) downDo=dp[r+1][c][cap-1];
+                        //Option to skip the negative cell
+                        downDont=coins[r][c]+dp[r+1][c][cap];
+                    }
+                    dp[r][c][cap]=max(max(rightDo,rightDont),max(downDo,downDont));
+                }
+            }
+        }
+        return dp[0][0][2];
     }
 };
