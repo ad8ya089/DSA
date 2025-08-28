@@ -16,7 +16,7 @@ public:
             for(int k=0;k<4;k++){
                 int nx=x+dx[k],ny=y+dy[k];
                 if(nx<0 or nx>=n or ny<0 or ny>=n) continue;
-                int nextT=max(t,grid[nx][ny]);
+                int nextT=max(t,grid[nx][ny]); //max height jo laga hai abhi tk to reach (nx,ny) --> issi ko toh minimise krna hai bhai
                 if(nextT<time[nx][ny]){
                     time[nx][ny]=nextT;
                     pq.emplace(nextT,nx,ny);
