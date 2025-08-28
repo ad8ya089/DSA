@@ -16,6 +16,7 @@ public:
             for(int k=0;k<4;k++){
                 int nx=x+dx[k],ny=y+dy[k];
                 if(nx<0 or nx>=m or ny<0 or ny>=n) continue;
+                //wait = max(0,moveTime[nx][ny]-t) and nextT=t+wait+1
                 int nextT=max(t,moveTime[nx][ny])+jump;
                 int newJump=(jump==1) ? 2 : 1;
                 if(nextT<time[nx][ny]){
