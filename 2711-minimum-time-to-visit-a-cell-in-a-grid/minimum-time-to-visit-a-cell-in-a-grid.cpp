@@ -19,7 +19,7 @@ public:
                 int nx=x+dx[k],ny=y+dy[k];
                 if(nx<0 or nx>=m or ny<0 or ny>=n) continue;
                 int wait=max(grid[nx][ny],t+1);
-                if((wait-(t+1))%2==1) wait++;
+                if((wait-(t+1))%2==1) wait++; //bich mei ruk ni skte back and forth krna hoga tb ussi liye ek ka increment ho jaa rha 
                 int nextT=wait;
                 if(nextT<time[nx][ny]){
                     time[nx][ny]=nextT;
