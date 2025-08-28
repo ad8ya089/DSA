@@ -1,20 +1,20 @@
 class Solution {
 public:
-    //Memoization (Top-Down) --> O(n^2)
-    int n;
-    int maxDiff(vector<int>&nums,int left,int right,vector<vector<int>>&dp){
-        if(left==right){
-            return nums[left];
-        }
-        if(dp[left][right]!=-1) return dp[left][right];
-        int scoreL=nums[left]-maxDiff(nums,left+1,right,dp);
-        int scoreR=nums[right]-maxDiff(nums,left,right-1,dp);
-        return dp[left][right]=max(scoreL,scoreR);
-    }
+    //Tabulation (Bottom-Up) --> O(n^2)
     bool predictTheWinner(vector<int>& nums) {
-        n=nums.size();
-        vector<vector<int>>dp(n,vector<int>(n,-1));
-        int mxD=maxDiff(nums,0,n-1,dp);
-        return mxD>=0;
+        int n=nums.size();
+        vector<vector<int>>dp(n,vector<int>(n,0));
+        for(int i=0;i<n;i++){
+            dp[i][i]=nums[i];
+        }
+        for(int len=2;len<=n;len++){
+            for(int left=0;left+len-1<n;left++){
+                int right=left+len-1;
+                int scoreL=nums[left]-dp[left+1][right];
+                int scoreR=nums[right]-dp[left][right-1];
+                dp[left][right]=max(scoreL,scoreR);
+            }
+        }
+        return dp[0][n-1]>=0;
     }
 };
