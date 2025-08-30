@@ -1,20 +1,18 @@
 class Solution {
 public:
-    //Tabulation
+    //Memoization
+    int m,n;
+    int f(int r,int c,vector<vector<int>>& grid,vector<vector<int>>& dp){
+        if(r<0 or c<0) return 1e9;
+        if(r==0 and c==0) return grid[0][0];
+        if(dp[r][c]!=-1) return dp[r][c];
+        int up=grid[r][c]+f(r-1,c,grid,dp);
+        int left=grid[r][c]+f(r,c-1,grid,dp);
+        return dp[r][c]=min(up,left);
+    }
     int minPathSum(vector<vector<int>>& grid) {
-        int m=grid.size(),n=grid[0].size();
-        vector<vector<int>>dp(m,vector<int>(n,0));
-        for(int r=0;r<m;r++){
-            for(int c=0;c<n;c++){
-                if(r==0 and c==0) dp[0][0]=grid[0][0];
-                else{
-                    int up=INT_MAX,left=INT_MAX;
-                    if(r-1>=0) up=dp[r-1][c];
-                    if(c-1>=0) left=dp[r][c-1];
-                    dp[r][c]=grid[r][c]+min(up,left);
-                }
-            }   
-        }
-        return dp[m-1][n-1];
+        m=grid.size();n=grid[0].size();
+        vector<vector<int>>dp(m,vector<int>(n,-1));
+        return f(m-1,n-1,grid,dp);
     }
 };
