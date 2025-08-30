@@ -2,29 +2,26 @@ class Solution {
 public:
     int compress(vector<char>& chars) {
         int n=chars.size();
-        int ct=1;
-        string s="";
-        s+=chars[0];
-        for(int i=1;i<n;i++){
-            if(chars[i]==chars[i-1]){
-                ct++;
-                continue;
-            }
-            if(ct==1) s+=chars[i];
-            else{
-                string k=to_string(ct);
-                s+=k;
-                s+=chars[i];
-                ct=1;
+        int ind=0,prev=0;
+        for(int i=0;i<n-1;i++){
+            if(chars[i]!=chars[i+1]){
+                int length=i-prev+1;
+                chars[ind++]=chars[i];
+                if(length>1){
+                    string s=to_string(length);
+                    for(int j=0;j<(int)s.size();j++){
+                        chars[ind++]=s[j]; 
+                    }
+                }
+                prev=i+1;
             }
         }
-        if(ct!=1){
-            string k=to_string(ct);
-            s+=k;
+        int length=n-prev;
+        chars[ind++]=chars[n-1];
+        if(length>1){
+            string s=to_string(length);
+            for(char c:s) chars[ind++]=c;
         }
-        for(int i=0;i<s.size();i++){
-            chars[i]=s[i];
-        }
-        return s.size();
+        return ind;
     }
 };
