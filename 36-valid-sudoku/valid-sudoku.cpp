@@ -1,46 +1,19 @@
 class Solution {
 public:
-    bool validRow(vector<vector<char>>& mat){
-        unordered_map<int,int>mp;
+    bool isValidSudoku(vector<vector<char>>& board) {
+        vector<vector<bool>>rows(9,vector<bool>(9,false));
+        vector<vector<bool>>cols(9,vector<bool>(9,false));
+        vector<vector<bool>>boxes(9,vector<bool>(9,false));
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
-                if(mat[i][j]!='.') mp[mat[i][j]]++;
-                if(mp[mat[i][j]]>1) return false;
-            }
-            if(mp.size()!=0) mp.clear();
-        }
-        return true;
-    }
-    bool validCol(vector<vector<char>>& mat){
-        unordered_map<int,int>mp;
-        for(int j=0;j<9;j++){
-            for(int i=0;i<9;i++){
-                if(mat[i][j]!='.') mp[mat[i][j]]++;
-                if(mp[mat[i][j]]>1) return false;
-            }
-            if(mp.size()!=0) mp.clear();
-        }
-        return true;
-    }
-    bool validBox(vector<vector<char>>& mat){
-        unordered_map<int,int>mp;
-        for(int stRow=0;stRow<9;stRow+=3){
-            for(int stCol=0;stCol<9;stCol+=3){
-                for(int i=0;i<3;i++){
-                    for(int j=0;j<3;j++){
-                        if(mat[stRow+i][stCol+j]!='.') mp[mat[stRow+i][stCol+j]]++;
-                        if(mp[mat[stRow+i][stCol+j]]>1) return false;
-                    }
+                if(board[i][j]!='.'){
+                    int num=board[i][j]-'1';
+                    int boxInd=(i/3)*3+(j/3);
+                    if(rows[i][num] or cols[j][num] or boxes[boxInd][num]) return false; //pehle se hi hai voh num uss row/col/box mei
+                    rows[i][num]=cols[j][num]=boxes[boxInd][num]=true;
                 }
-                if(mp.size()!=0) mp.clear();
             }
         }
         return true;
-    }
-    bool isValidSudoku(vector<vector<char>>& board) {
-        bool row=validRow(board);
-        bool col=validCol(board);
-        bool box=validBox(board);
-        return row and col and box;
     }
 };
