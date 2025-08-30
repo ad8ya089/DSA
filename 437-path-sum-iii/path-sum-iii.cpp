@@ -10,7 +10,8 @@
  * };
  */
 class Solution {
-public:
+public: 
+    //Brute force --> O(N^2)
     int target;
     int solve(TreeNode* root,long long curr){
         if(!root) return 0;
