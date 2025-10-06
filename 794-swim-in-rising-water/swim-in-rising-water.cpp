@@ -2,24 +2,28 @@ class Solution {
 public:
     int swimInWater(vector<vector<int>>& grid) {
         int n=grid.size();
-        //min heap (time,x,y)
-        using State=tuple<int,int,int>; //yeh naya chiz sikha bc
-        priority_queue<State,vector<State>,greater<State>>pq;
+        using T=tuple<int,int,int>;
+        priority_queue<T,vector<T>,greater<T>>pq;
         vector<vector<int>>time(n,vector<int>(n,INT_MAX));
+        vector<vector<bool>>vis(n,vector<bool>(n,false));
         pq.emplace(grid[0][0],0,0);
-        time[0][0]=grid[0][0]; //shuru toh first time se hi hoga na
-        vector<int>dx={-1,0,0,1};
-        vector<int>dy={0,-1,1,0};
+        time[0][0]=grid[0][0]; //start
+        vis[0][0]=1;
+        vector<int>dr={-1,0,0,1};
+        vector<int>dc={0,-1,1,0};
         while(!pq.empty()){
-            auto [t,x,y]=pq.top();pq.pop();
-            if(t>time[x][y]) continue; //faltu
-            for(int k=0;k<4;k++){
-                int nx=x+dx[k],ny=y+dy[k];
-                if(nx<0 or nx>=n or ny<0 or ny>=n) continue;
-                int nextT=max(t,grid[nx][ny]); //max height jo laga hai abhi tk to reach (nx,ny) --> issi ko toh minimise krna hai bhai
-                if(nextT<time[nx][ny]){
-                    time[nx][ny]=nextT;
-                    pq.emplace(nextT,nx,ny);
+            auto [t,r,c]=pq.top();pq.pop();
+            if(t>time[r][c]) continue;
+            for(int i=0;i<4;i++){
+                int nr=r+dr[i];
+                int nc=c+dc[i];
+                if(nr>=0 and nc>=0 and nr<n and nc<n and !vis[nr][nc]){
+                    int nextT=max(t,grid[nr][nc]);
+                    if(nextT<time[nr][nc]){
+                        time[nr][nc]=nextT;
+                        pq.emplace(nextT,nr,nc);
+                        vis[nr][nc]=1;
+                    }
                 }
             }
         }
