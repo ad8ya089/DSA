@@ -2,13 +2,9 @@ class Solution {
 public:
     int longestSubarray(vector<int>& nums) {
         int n=nums.size();
-        vector<bool>v(n-2);
-        for(int i=2;i<n;i++){
-            v[i]=((nums[i]-nums[i-1]-nums[i-2])==0);
-        }
         int ct=0,mx=0;
-        for(int r=0;r<n;r++){
-            if(!v[r]){
+        for(int r=2;r<n;r++){
+            if((nums[r-2]+nums[r-1])!=nums[r]){
                 mx=max(mx,ct);
                 ct=0;
                 continue;
